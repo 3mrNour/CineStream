@@ -23,39 +23,49 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: .center,
-            children: [
-              Center(
-                child: Image(
-                  image: AssetImage('assets/images/logo-white.png'),
-                  width: 180,
-                ),
-              ),
-              SizedBox(height: 20),
-              CircularProgressIndicator(
-                color: Color(0xffFFCD30),
-                strokeWidth: 10,
-              ),
-            ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xff291E40), Color(0xff413066), Color(0xff120D1D)],
+            stops: [0.1, 0.5, 0.9],
           ),
-          Positioned(
-            bottom: -150,
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: .center,
+              children: [
+                Center(
+                  child: Image(
+                    image: AssetImage('assets/images/logo-white.png'),
+                    width: 180,
+                  ),
+                ),
+                SizedBox(height: 20),
+                CircularProgressIndicator(
+                  color: Color(0xffFFCD30),
+                  strokeWidth: 10,
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: -150,
 
-            child: RotatedBox(
-              quarterTurns: 3,
-              child: Opacity(
-                opacity: 0.02,
-                child: Image(
-                  image: AssetImage('assets/images/CineStream.png'),
-                  width: 800,
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: Opacity(
+                  opacity: 0.05,
+                  child: Image(
+                    image: AssetImage('assets/images/CineStream.png'),
+                    width: 800,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       backgroundColor: Color(0xff291E40),
     );

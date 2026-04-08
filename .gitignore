@@ -12,7 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 .vscode
-
+lib/data/api/constants.dart
 # IntelliJ related
 *.iml
 *.ipr

@@ -1,16 +1,17 @@
+import 'package:cinestream/data/api/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiClient {
-  String appBaseUrl = 'https://dummyjson.com';
+  final String _appBaseUrl = 'https://api.themoviedb.org/3';
 
   late Dio _dio;
 
   ApiClient() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: appBaseUrl,
+        baseUrl: _appBaseUrl,
         headers: {'Content-Type': 'application/json'},
       ),
     );
@@ -36,7 +37,7 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           print(options.data);
-          // Add authorization token to all requests
+          options.queryParameters['api_key'] = API_KEY;
           return handler.next(options);
         },
         onError: (DioException error, handler) async {

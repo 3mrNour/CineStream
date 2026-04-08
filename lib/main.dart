@@ -1,3 +1,4 @@
+import 'package:cinestream/screens/MainScreen.dart';
 import 'package:cinestream/screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
 

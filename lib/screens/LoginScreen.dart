@@ -1,3 +1,4 @@
+import 'package:cinestream/screens/MainScreen.dart';
 import 'package:cinestream/screens/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Color(0xffFFCD30),
                                 ),
                                 filled: true,
-                                fillColor: Color.fromARGB(76, 65, 48, 102),
+                                fillColor: Color.fromARGB(160, 65, 48, 102),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -128,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Color(0xffFFCD30),
                                 ),
                                 filled: true,
-                                fillColor: Color.fromARGB(76, 65, 48, 102),
+                                fillColor: Color.fromARGB(160, 65, 48, 102),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -166,9 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialButton(
                               color: Color(0xffFFCD30),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  15,
-                                ), // نفس دوران الـ TextField
+                                borderRadius: BorderRadius.circular(15),
                               ),
                               minWidth: .maxFinite,
                               height: 55,
@@ -184,6 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 debugPrint(
                                   _formKey.currentState?.instantValue
                                       .toString(),
+                                );
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => MainScreen(),
+                                  ),
                                 );
                               },
                               child: const Text('Login'),
