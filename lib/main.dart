@@ -1,5 +1,6 @@
 import 'package:cinestream/screens/MainScreen.dart';
 import 'package:cinestream/screens/SplashScreen.dart';
+import 'package:cinestream/screens/TestScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(fontFamily: 'IBMPlexSansArabic'),
-      home: SplashScreen(),
+      home: MainScreen(),
     );
   }
 }
