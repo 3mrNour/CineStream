@@ -5,6 +5,7 @@ import 'package:cinestream/data/api/api_endpoints.dart';
 import 'package:cinestream/data/api/constants.dart';
 import 'package:cinestream/data/models/genere_model.dart';
 import 'package:cinestream/data/models/movie_model.dart';
+import 'package:cinestream/screens/MovieScreen.dart';
 // import 'package:cinestream/widgets/BottomNavigationBar.dart';
 // import 'package:cinestream/widgets/CrystalBar.dart';
 import 'package:cinestream/widgets/SearchBox.dart';
@@ -22,6 +23,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   ApiClient apiClient = ApiClient();
   List<Movie> upComingMovies = [];
+  List<Movie> topRatedMovies = [];
   Movie? randomMovie;
   bool isLoading = true;
   Future<List<Movie>> getupComingMovies() async {
@@ -44,11 +46,52 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  String getFirstGenre({
+    required Movie currentMovie,
+    required int index,
+    required List<Movie> moviesList,
+  }) {
+    if (currentMovie.genreIds.isEmpty) {
+      return "N/A";
+    }
+    String foundGenre = genresList
+        .toList()
+        .firstWhere(
+          (element) => element.id == moviesList[index].genreIds[0],
+          orElse: () =>
+              Genre(id: 0, name: "N/A", colors: [], icon: Icons.error),
+        )
+        .name;
+    return foundGenre;
+  }
+
+  Future<List<Movie>> getTopRatedMovies() async {
+    try {
+      var topRatedMoviesRes = await apiClient.getData(
+        ApiEndpoints().topRatedMovies,
+      );
+      if (topRatedMoviesRes.statusCode == 200 &&
+          topRatedMoviesRes.data != null) {
+        isLoading = false;
+        return MoviesResponse.fromJson(topRatedMoviesRes.data).movies;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return [];
+    }
+  }
+
   void loadMovies() async {
-    var movies = await getupComingMovies();
+    var LoadedupComingmovies = await getupComingMovies();
+    var LoadedtopRatedMovies = await getTopRatedMovies();
     setState(() {
-      upComingMovies = movies;
-      randomMovie = (upComingMovies..shuffle()).first;
+      upComingMovies = LoadedupComingmovies;
+      topRatedMovies = LoadedtopRatedMovies;
+      randomMovie = (topRatedMovies..shuffle()).first;
     });
   }
 
@@ -167,118 +210,141 @@ class _MainScreenState extends State<MainScreen> {
                                   width: .infinity,
                                   child: CarouselSlider.builder(
                                     itemCount: upComingMovies.length,
-                                    itemBuilder: (context, index, realIndex) =>
-                                        Container(
-                                          // margin: .symmetric(horizontal: 5),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadiusGeometry.circular(
-                                                  20,
-                                                ),
-                                            child: Stack(
-                                              fit: .passthrough,
-                                              children: [
-                                                CachedNetworkImage(
-                                                  imageUrl:
-                                                      ApiEndpoints()
-                                                          .ImageBaseUrl +
-                                                      upComingMovies[index]
-                                                          .backdropPath,
-                                                  fit: BoxFit.cover,
-                                                  progressIndicatorBuilder:
-                                                      (
-                                                        context,
-                                                        url,
-                                                        downloadProgress,
-                                                      ) => Center(
-                                                        child: SizedBox(
-                                                          height: 50,
-                                                          width: 50,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                                color: Color(
-                                                                  0xffFFCD30,
-                                                                ),
-                                                                strokeWidth: 10,
-                                                              ),
-                                                        ),
+                                    itemBuilder: (context, index, realIndex) => Container(
+                                      // margin: .symmetric(horizontal: 5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: Ink(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MovieScreen(
+                                                        movie:
+                                                            upComingMovies[index],
                                                       ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(Icons.error),
                                                 ),
+                                              );
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadiusGeometry.circular(
+                                                    20,
+                                                  ),
+                                              child: Stack(
+                                                fit: .passthrough,
+                                                children: [
+                                                  CachedNetworkImage(
+                                                    imageUrl:
+                                                        ApiEndpoints()
+                                                            .ImageBaseUrl +
+                                                        upComingMovies[index]
+                                                            .backdropPath,
+                                                    fit: BoxFit.cover,
+                                                    alignment: .center,
+                                                    progressIndicatorBuilder:
+                                                        (
+                                                          context,
+                                                          url,
+                                                          downloadProgress,
+                                                        ) => Center(
+                                                          child: SizedBox(
+                                                            height: 50,
+                                                            width: 50,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                                  color: Color(
+                                                                    0xffFFCD30,
+                                                                  ),
+                                                                  strokeWidth:
+                                                                      10,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            Icon(Icons.error),
+                                                  ),
 
-                                                Positioned(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        begin: Alignment
-                                                            .bottomCenter,
-                                                        end:
-                                                            Alignment.topCenter,
-                                                        colors: [
-                                                          Colors.black,
-                                                          Colors.transparent,
-                                                        ],
-                                                        stops: const [0.0, 0.6],
+                                                  Positioned(
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                          begin: Alignment
+                                                              .bottomCenter,
+                                                          end: Alignment
+                                                              .topCenter,
+                                                          colors: [
+                                                            Colors.black,
+                                                            Colors.transparent,
+                                                          ],
+                                                          stops: const [
+                                                            0.0,
+                                                            0.6,
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                Positioned(
-                                                  bottom: 20,
-                                                  left: 10,
-                                                  right: 10,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        upComingMovies[index]
-                                                            .title,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                      Text(
-                                                        upComingMovies[index]
-                                                            .overview,
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color:
-                                                              const Color.fromARGB(
-                                                                104,
-                                                                255,
-                                                                255,
-                                                                255,
+                                                  Positioned(
+                                                    bottom: 20,
+                                                    left: 10,
+                                                    right: 10,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          upComingMovies[index]
+                                                              .title,
+                                                          style:
+                                                              const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
                                                               ),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        SizedBox(height: 5),
+                                                        Text(
+                                                          upComingMovies[index]
+                                                              .overview,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                const Color.fromARGB(
+                                                                  104,
+                                                                  255,
+                                                                  255,
+                                                                  255,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
+                                      ),
+                                    ),
                                     options: CarouselOptions(
                                       autoPlay: true,
                                       aspectRatio: 1.7,
@@ -309,7 +375,7 @@ class _MainScreenState extends State<MainScreen> {
                                         ),
                                         child: Image(
                                           image: AssetImage(
-                                            'assets/images/choices-1.png',
+                                            'assets/images/choices-223.png',
                                           ),
                                           width: 200,
                                         ),
@@ -396,7 +462,7 @@ class _MainScreenState extends State<MainScreen> {
 
                                                       style: const TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 14,
+                                                        fontSize: 18,
 
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -445,7 +511,9 @@ class _MainScreenState extends State<MainScreen> {
                                                         Text(
                                                           randomMovie!
                                                               .voteAverage
-                                                              .toString(),
+                                                              .toStringAsFixed(
+                                                                1,
+                                                              ),
                                                           style: TextStyle(
                                                             color: Colors.grey,
                                                             fontSize: 12,
@@ -454,19 +522,18 @@ class _MainScreenState extends State<MainScreen> {
                                                       ],
                                                     ),
                                                     const SizedBox(height: 10),
-                                                    // الوصف
                                                     Text(
                                                       randomMovie!.overview,
                                                       style: TextStyle(
                                                         color: Colors.white70,
                                                         fontSize: 12,
                                                       ),
-                                                      maxLines: 3,
+                                                      maxLines: 4,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     ),
                                                     const Spacer(),
-                                                    // الـ Genre (ممكن تعرض أول ID أو تعمل Map للـ IDs بأسماء الـ Genres)
+
                                                     Container(
                                                       padding:
                                                           const EdgeInsets.symmetric(
@@ -482,7 +549,13 @@ class _MainScreenState extends State<MainScreen> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Action", // هنا ممكن تعمل دالة تحول الـ ID لاسم
+                                                        getFirstGenre(
+                                                          currentMovie:
+                                                              randomMovie!,
+                                                          index: 0,
+                                                          moviesList:
+                                                              topRatedMovies,
+                                                        ),
                                                         style: TextStyle(
                                                           color: Colors.amber,
                                                           fontSize: 10,
@@ -500,6 +573,7 @@ class _MainScreenState extends State<MainScreen> {
                                       ),
                                     ],
                                   ),
+                                SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20),
                                   child: Row(
@@ -653,49 +727,236 @@ class _MainScreenState extends State<MainScreen> {
                                           crossAxisSpacing: 10,
                                           childAspectRatio: 1.1 / 1.5,
                                         ),
-                                    itemCount: upComingMovies.length,
+                                    itemCount: topRatedMovies.length,
                                     itemBuilder: (context, index) {
-                                      return Container(
-                                        width: 100,
-                                        height: 200,
-                                        // margin: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                ApiEndpoints().ImageBaseUrl +
-                                                upComingMovies[index]
-                                                    .posterPath,
-                                            fit: BoxFit.cover,
-                                            progressIndicatorBuilder:
-                                                (
-                                                  context,
-                                                  url,
-                                                  downloadProgress,
-                                                ) => Center(
-                                                  child: SizedBox(
-                                                    height: 50,
-                                                    width: 50,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Color(
-                                                            0xffFFCD30,
-                                                          ),
-                                                          strokeWidth: 10,
-                                                        ),
-                                                  ),
+                                      return Material(
+                                        color: Colors.transparent,
+                                        child: Ink(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MovieScreen(
+                                                        movie:
+                                                            topRatedMovies[index],
+                                                      ),
                                                 ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 100,
+                                              height: 200,
+                                              // margin: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+
+                                                child: Stack(
+                                                  fit: .passthrough,
+                                                  children: [
+                                                    CachedNetworkImage(
+                                                      imageUrl:
+                                                          ApiEndpoints()
+                                                              .ImageBaseUrl +
+                                                          topRatedMovies[index]
+                                                              .posterPath,
+                                                      fit: BoxFit.cover,
+                                                      progressIndicatorBuilder:
+                                                          (
+                                                            context,
+                                                            url,
+                                                            downloadProgress,
+                                                          ) => Center(
+                                                            child: SizedBox(
+                                                              height: 50,
+                                                              width: 50,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                    color: Color(
+                                                                      0xffFFCD30,
+                                                                    ),
+                                                                    strokeWidth:
+                                                                        10,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                      errorWidget:
+                                                          (
+                                                            context,
+                                                            url,
+                                                            error,
+                                                          ) =>
+                                                              Icon(Icons.error),
+                                                    ),
+                                                    Positioned(
+                                                      child: Container(
+                                                        height: .infinity,
+                                                        width: .infinity,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            begin: Alignment
+                                                                .bottomCenter,
+                                                            end: Alignment
+                                                                .topCenter,
+                                                            colors: [
+                                                              Colors.black,
+                                                              Colors
+                                                                  .transparent,
+                                                            ],
+                                                            stops: const [
+                                                              0.0,
+                                                              0.5,
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      top: 10,
+                                                      right: 10,
+                                                      width: 60,
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color:
+                                                              const Color.fromARGB(
+                                                                255,
+                                                                15,
+                                                                15,
+                                                                12,
+                                                              ).withOpacity(
+                                                                0.5,
+                                                              ),
+
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                5,
+                                                              ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                2.0,
+                                                              ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                .center,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.star,
+                                                                color: Colors
+                                                                    .amber,
+                                                                size: 16,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Text(
+                                                                topRatedMovies[index]
+                                                                    .voteAverage
+                                                                    .toStringAsFixed(
+                                                                      1,
+                                                                    ),
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .amber,
+                                                                  fontWeight:
+                                                                      .bold,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      bottom: 20,
+                                                      left: 10,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            .start,
+                                                        children: [
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    5,
+                                                                  ),
+                                                              color:
+                                                                  const Color.fromARGB(
+                                                                    155,
+                                                                    50,
+                                                                    11,
+                                                                    143,
+                                                                  ),
+                                                              border: Border.all(
+                                                                color:
+                                                                    Color.fromARGB(
+                                                                      176,
+                                                                      95,
+                                                                      27,
+                                                                      255,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical: 2,
+                                                                  ),
+                                                              child: Text(
+                                                                getFirstGenre(
+                                                                  currentMovie:
+                                                                      topRatedMovies[index],
+                                                                  index: index,
+                                                                  moviesList:
+                                                                      topRatedMovies,
+                                                                ),
+                                                                style: TextStyle(
+                                                                  color:
+                                                                      const Color.fromARGB(
+                                                                        255,
+                                                                        255,
+                                                                        255,
+                                                                        255,
+                                                                      ),
+                                                                  fontWeight:
+                                                                      .w400,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          Container(
+                                                            width: 150,
+                                                            child: Text(
+                                                              topRatedMovies[index]
+                                                                  .title,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    .w600,
+                                                                fontSize: 16,
+                                                              ),
+                                                              maxLines: 2,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       );

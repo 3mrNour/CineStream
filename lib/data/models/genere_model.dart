@@ -124,4 +124,10 @@ List<Genre> genresList = [
     icon: Icons.military_tech,
     colors: [const Color(0xff403B4A), const Color(0xffE7E9BB)],
   ),
+  Genre(
+    id: 37, 
+    name: "Western", 
+    icon: Icons.agriculture,
+    colors: [const Color(0xff757F9A), const Color(0xffD7DDE8)],
+  ),
 ];
