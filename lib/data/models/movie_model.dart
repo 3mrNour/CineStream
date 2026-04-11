@@ -70,22 +70,32 @@ class Movie {
     required this.voteCount,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
-    adult: json["adult"],
-    backdropPath: json["backdrop_path"],
-    genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
-    id: json["id"],
-    originalLanguage: json["original_language"] ?? 'en',
-    originalTitle: json["original_title"],
-    overview: json["overview"],
-    popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"],
-    releaseDate: DateTime.parse(json["release_date"]),
-    title: json["title"],
-    video: json["video"],
-    voteAverage: json["vote_average"]?.toDouble(),
-    voteCount: json["vote_count"],
-  );
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    final releaseRaw = json["release_date"];
+    final releaseDate = (releaseRaw != null &&
+            releaseRaw.toString().trim().isNotEmpty)
+        ? DateTime.parse(releaseRaw.toString())
+        : DateTime.fromMillisecondsSinceEpoch(0);
+
+    return Movie(
+      adult: json["adult"] ?? false,
+      backdropPath: json["backdrop_path"]?.toString() ?? '',
+      genreIds: json["genre_ids"] != null
+          ? List<int>.from((json["genre_ids"] as List).map((x) => x as int))
+          : <int>[],
+      id: json["id"] as int,
+      originalLanguage: json["original_language"]?.toString() ?? 'en',
+      originalTitle: json["original_title"]?.toString() ?? '',
+      overview: json["overview"]?.toString() ?? '',
+      popularity: (json["popularity"] as num?)?.toDouble() ?? 0,
+      posterPath: json["poster_path"]?.toString() ?? '',
+      releaseDate: releaseDate,
+      title: json["title"]?.toString() ?? '',
+      video: json["video"] ?? false,
+      voteAverage: (json["vote_average"] as num?)?.toDouble() ?? 0,
+      voteCount: json["vote_count"] as int? ?? 0,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "adult": adult,

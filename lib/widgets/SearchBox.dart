@@ -1,5 +1,8 @@
+import 'package:cinestream/providers/navBar_provider.dart';
+import 'package:cinestream/providers/search_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchBox extends StatefulWidget {
   const SearchBox({super.key});
@@ -9,8 +12,18 @@ class SearchBox extends StatefulWidget {
 }
 
 class _SearchBoxState extends State<SearchBox> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final searchProvider = Provider.of<SearchProvider>(context);
+    final navProvider = Provider.of<NavProvider>(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
@@ -20,7 +33,12 @@ class _SearchBoxState extends State<SearchBox> {
           child: TextField(
             cursorColor: Colors.amber,
             textInputAction: TextInputAction.search,
-            keyboardType: .text,
+            keyboardType: TextInputType.text,
+            controller: _searchController,
+            onSubmitted: (value) {
+              searchProvider.submitSearch(value);
+              navProvider.changeIndex(1);
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(
@@ -29,7 +47,10 @@ class _SearchBoxState extends State<SearchBox> {
               ),
               labelText: "Search for movies, TV shows, and more",
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              labelStyle: TextStyle(color: Color.fromARGB(68, 255, 255, 255)),
+              labelStyle: TextStyle(
+                color: Color.fromARGB(68, 255, 255, 255),
+                fontSize: 14,
+              ),
               prefixIcon: const Icon(Icons.search, color: Color(0xffFFCD30)),
 
               filled: true,
