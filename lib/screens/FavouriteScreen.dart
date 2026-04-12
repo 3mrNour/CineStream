@@ -110,6 +110,7 @@ class FavouriteScreen extends StatelessWidget {
                     }
 
                     return ListView.builder(
+                      cacheExtent: 500,
                       padding: const EdgeInsets.only(top: 20, bottom: 100),
                       itemCount: favoriteProvider.favorites.length,
                       itemBuilder: (context, index) {
@@ -163,6 +164,7 @@ class FavouriteScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   child: CachedNetworkImage(
+                    memCacheWidth: 350,
                     imageUrl: ApiEndpoints().ImageBaseUrl + movie.posterPath,
                     width: 120,
                     height: 180,

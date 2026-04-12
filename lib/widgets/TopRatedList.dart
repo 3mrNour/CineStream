@@ -16,7 +16,9 @@ class TopRatedListBuilder extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: GridView.builder(
+        cacheExtent: 500,
         shrinkWrap: true,
+        padding: .only(bottom: 100),
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -37,6 +39,8 @@ class TopRatedListBuilder extends StatelessWidget {
                 fit: .passthrough,
                 children: [
                   CachedNetworkImage(
+                    memCacheWidth: 300,
+
                     imageUrl:
                         ApiEndpoints().ImageBaseUrl +
                         moviesProvider.popularMovies[index].posterPath,

@@ -13,9 +13,17 @@ class UserProvider with ChangeNotifier {
   TextEditingController usernmaeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final AuthServises authServises = AuthServises();
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  bool get securePassword => _securePassword;
   UserModel? userModel;
+  bool _securePassword = true;
+  void togglePassword() {
+    _securePassword = !_securePassword;
+    notifyListeners();
+  }
+
   Future<void> login(BuildContext context) async {
     if (formKey.currentState?.validate() ?? false) {
       _isLoading = true;

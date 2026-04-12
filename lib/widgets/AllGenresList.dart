@@ -15,6 +15,7 @@ class AllGenresList extends StatelessWidget {
       child: SizedBox(
         height: 160,
         child: GridView.builder(
+          cacheExtent: 500,
           scrollDirection: Axis.horizontal,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

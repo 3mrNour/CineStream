@@ -24,6 +24,7 @@ class RelatedMoviesBuilder extends StatelessWidget {
                   child: CircularProgressIndicator(color: Color(0xffFFCD30)),
                 )
               : ListView.builder(
+                  cacheExtent: 500,
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   itemCount: value.relatedMovies.length,
@@ -39,7 +40,7 @@ class RelatedMoviesBuilder extends StatelessWidget {
                         color: Colors.transparent,
                         child: Ink(
                           child: InkWell(
-                            splashColor: Colors.indigoAccent,
+                            splashColor: const Color.fromARGB(122, 255, 193, 7),
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -54,6 +55,7 @@ class RelatedMoviesBuilder extends StatelessWidget {
                                 fit: StackFit.expand,
                                 children: [
                                   CachedNetworkImage(
+                                    memCacheWidth: 280,
                                     imageUrl:
                                         ApiEndpoints().ImageBaseUrl +
                                         relatedMovie.posterPath,

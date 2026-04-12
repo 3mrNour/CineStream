@@ -121,70 +121,55 @@ class _SearchScreenState extends State<SearchScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Wrap(
-            runSpacing: 10,
-            runAlignment: .center,
-            alignment: .center,
-            crossAxisAlignment: .center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: .center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     searchProvider.isGenreMode
                         ? searchProvider.currentGenreQuery
                         : searchProvider.currentQuery,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(width: 5),
                   Text(
                     "(${searchProvider.searchResults.length} results found)",
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.5),
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   ),
                 ],
               ),
-
-              Spacer(),
-              Material(
-                color: Colors.transparent,
-                child: Ink(
-                  child: InkWell(
-                    splashColor: Colors.amber.withOpacity(0.3),
-                    onTap: () {
-                      searchProvider.clearSearch();
-                      CustomToast.show(
-                        context,
-                        status: ToastStatus.searchCleared,
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.amber.withOpacity(0.15),
-                        border: Border.all(
-                          color: Colors.amber.withOpacity(0.5),
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "Clear Search",
-                        style: const TextStyle(
-                          color: Colors.amber,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+              GestureDetector(
+                onTap: () {
+                  searchProvider.clearSearch();
+                  CustomToast.show(context, status: ToastStatus.searchCleared);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.15),
+                    border: Border.all(
+                      color: Colors.amber.withOpacity(0.5),
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    "Clear",
+                    style: TextStyle(
+                      color: Colors.amber,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -194,7 +179,13 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            cacheExtent: 500,
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 10,
+              bottom: 120,
+            ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 15,
@@ -221,13 +212,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Stack(
-                      fit: .expand,
+                      fit: StackFit.expand,
                       children: [
                         movie.posterPath.isNotEmpty
                             ? CachedNetworkImage(
                                 imageUrl:
                                     ApiEndpoints().ImageBaseUrl +
                                     movie.posterPath,
+                                memCacheWidth: 500,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator(
@@ -251,79 +243,63 @@ class _SearchScreenState extends State<SearchScreen> {
                           bottom: 0,
                           left: 0,
                           right: 0,
-                          height: 200,
+                          height: 120,
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
-                                colors: [
-                                  Color.fromARGB(255, 0, 0, 0),
-                                  Colors.transparent,
-                                ],
+                                colors: [Colors.black87, Colors.transparent],
                               ),
                             ),
                           ),
                         ),
+
                         Positioned(
-                          bottom: 30,
-                          left: 12,
-                          child: Column(
-                            mainAxisAlignment: .start,
-                            crossAxisAlignment: .start,
-                            children: [
-                              Container(
-                                width: 150,
-                                child: Text(
-                                  movie.title,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: .w600,
-                                    fontSize: 16,
-                                  ),
-                                  maxLines: 3,
-                                  overflow: .ellipsis,
-                                ),
-                              ),
-                            ],
+                          bottom: 10,
+                          left: 10,
+                          right: 10,
+                          child: Text(
+                            movie.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Positioned(
                           top: 10,
                           right: 10,
-                          width: 60,
                           child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(
-                                255,
-                                15,
-                                15,
-                                12,
-                              ).withOpacity(0.5),
-
+                              color: Colors.black.withOpacity(0.6),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Row(
-                                mainAxisAlignment: .center,
-                                children: [
-                                  Icon(
-                                    Icons.star,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  movie.voteAverage.toStringAsFixed(1),
+                                  style: const TextStyle(
                                     color: Colors.amber,
-                                    size: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
                                   ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    movie.voteAverage.toStringAsFixed(1),
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: .bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

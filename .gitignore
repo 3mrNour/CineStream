@@ -13,6 +13,9 @@
 migrate_working_dir/
 .vscode
 lib/data/api/constants.dart
+*.jks
+*.keystore
+key.properties
 # IntelliJ related
 *.iml
 *.ipr

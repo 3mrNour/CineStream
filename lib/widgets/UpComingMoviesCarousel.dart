@@ -26,6 +26,7 @@ class UpComingMoviesCarousel extends StatelessWidget {
               fit: .passthrough,
               children: [
                 CachedNetworkImage(
+                  memCacheWidth: 800,
                   imageUrl:
                       ApiEndpoints().ImageBaseUrl +
                       moviesProvider.nowPlayingMovies[index].backdropPath,
