@@ -14,7 +14,7 @@
 
 ## Screenshots / Demo
 
-![App Overview](assets/App%20Overview.gif)
+![App Overview](assets/assets/App_Overview.gif)
 
 ---
 
@@ -36,24 +36,24 @@
 
 ## Tech Stack & Libraries
 
-| Category | Packages / tech |
-|----------|-----------------|
-| **Framework** | Flutter (Material), Dart SDK `^3.11.3` |
-| **State management** | `provider` (`ChangeNotifier` + `MultiProvider`) |
-| **Networking** | `dio`, `pretty_dio_logger` |
-| **Forms & validation** | `flutter_form_builder`, `form_builder_validators` |
-| **Local persistence** | `shared_preferences` (login flag, user JSON, favourites) |
-| **Images** | `cached_network_image` |
-| **UI / navigation** | `carousel_slider`, `crystal_navigation_bar`, `motion_tab_bar_v2` (wired in `CustomBottomBar`; main shell uses crystal bar), `cupertino_icons` |
-| **Feedback** | `fluttertoast`, `delightful_toast` |
-| **Quality** | `flutter_lints` |
+| Category               | Packages / tech                                                                                                                               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**          | Flutter (Material), Dart SDK `^3.11.3`                                                                                                        |
+| **State management**   | `provider` (`ChangeNotifier` + `MultiProvider`)                                                                                               |
+| **Networking**         | `dio`, `pretty_dio_logger`                                                                                                                    |
+| **Forms & validation** | `flutter_form_builder`, `form_builder_validators`                                                                                             |
+| **Local persistence**  | `shared_preferences` (login flag, user JSON, favourites)                                                                                      |
+| **Images**             | `cached_network_image`                                                                                                                        |
+| **UI / navigation**    | `carousel_slider`, `crystal_navigation_bar`, `motion_tab_bar_v2` (wired in `CustomBottomBar`; main shell uses crystal bar), `cupertino_icons` |
+| **Feedback**           | `fluttertoast`, `delightful_toast`                                                                                                            |
+| **Quality**            | `flutter_lints`                                                                                                                               |
 
 **External APIs**
 
-| API | Base URL (in code) | Purpose |
-|-----|-------------------|---------|
-| TMDB | `https://api.themoviedb.org/3` | Movies, search, discover, recommendations; images from `image.tmdb.org` |
-| DummyJSON | `https://dummyjson.com` | `POST /auth/login` for demo authentication |
+| API       | Base URL (in code)             | Purpose                                                                 |
+| --------- | ------------------------------ | ----------------------------------------------------------------------- |
+| TMDB      | `https://api.themoviedb.org/3` | Movies, search, discover, recommendations; images from `image.tmdb.org` |
+| DummyJSON | `https://dummyjson.com`        | `POST /auth/login` for demo authentication                              |
 
 ---
 
@@ -160,10 +160,10 @@ lib/
 
 ### Environment variables & API keys
 
-| Secret / config | Where it lives in this project | Notes |
-|-----------------|----------------------------------|--------|
+| Secret / config  | Where it lives in this project            | Notes                                                                                    |
+| ---------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------- |
 | **TMDB API key** | `lib/data/api/constants.dart` → `API_KEY` | Injected on every TMDB request as `api_key` query parameter via `ApiClient` interceptor. |
-| **DummyJSON** | No API key in code | Login uses public DummyJSON `POST /auth/login` with username/password in the body. |
+| **DummyJSON**    | No API key in code                        | Login uses public DummyJSON `POST /auth/login` with username/password in the body.       |
 
 This codebase does **not** use a `.env` file or `flutter_dotenv`. If you prefer environment-based config, you would add a package and refactor `constants.dart` accordingly.
 
@@ -192,5 +192,4 @@ Use credentials that exist on **DummyJSON** (e.g. their documented test users su
 - **LinkedIn:** [Amr Nour](https://www.linkedin.com/in/amrnour1/)
 - **Email:** amrnour1010@gmail.com
 
-
-*Movie data and images courtesy of [The Movie Database (TMDB)](https://www.themoviedb.org/). This app is not endorsed or certified by TMDB.*
+_Movie data and images courtesy of [The Movie Database (TMDB)](https://www.themoviedb.org/). This app is not endorsed or certified by TMDB._
