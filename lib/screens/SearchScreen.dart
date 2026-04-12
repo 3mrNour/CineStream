@@ -21,37 +21,40 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final searchProvider = Provider.of<SearchProvider>(context);
 
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xff291E40), Color(0xff413066)],
-            stops: [0.1, 0.9],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xff291E40), Color(0xff413066)],
+              stops: [0.1, 0.9],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SearchBox(),
-              ),
-              Expanded(
-                child: searchProvider.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(color: Colors.amber),
-                      )
-                    : !searchProvider.isSearchMode
-                    ? _buildInitialState()
-                    : searchProvider.searchResults.isEmpty
-                    ? _buildEmptyState()
-                    : _buildResultsGrid(searchProvider),
-              ),
-            ],
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SearchBox(),
+                ),
+                Expanded(
+                  child: searchProvider.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(color: Colors.amber),
+                        )
+                      : !searchProvider.isSearchMode
+                      ? _buildInitialState()
+                      : searchProvider.searchResults.isEmpty
+                      ? _buildEmptyState()
+                      : _buildResultsGrid(searchProvider),
+                ),
+              ],
+            ),
           ),
         ),
       ),

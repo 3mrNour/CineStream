@@ -34,10 +34,20 @@ class MovieScreen extends StatelessWidget {
                       context,
                       listen: false,
                     ).toggleFavorite(movie);
-                    CustomToast.show(
+                    if (Provider.of<FavoriteProvider>(
                       context,
-                      status: ToastStatus.addedToFavorite,
-                    );
+                      listen: false,
+                    ).favorites.contains(movie)) {
+                      CustomToast.show(
+                        status: ToastStatus.addedToFavorite,
+                        context,
+                      );
+                    } else {
+                      CustomToast.show(
+                        status: ToastStatus.removedFromFavorite,
+                        context,
+                      );
+                    }
                   },
                   icon:
                       Provider.of<FavoriteProvider>(
