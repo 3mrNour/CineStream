@@ -14,14 +14,7 @@
 
 ## Screenshots / Demo
 
-Add your own visuals here when ready:
-
-![Home / discovery](link-to-image)
-![Search results](link-to-image)
-![Movie detail](link-to-image)
-![Favourites](link-to-image)
-
-*Tip: GIFs work well to show the carousel, search, and bottom navigation.*
+![App Overview](assets/App%20Overview.gif)
 
 ---
 
