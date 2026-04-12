@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                           "Welcome Back! ",
                           style: TextStyle(
                             color: Color(0xffffffff),
-                            fontSize: 28,
+                            fontSize: 24,
                             fontWeight: .w600,
                           ),
                         ),
@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                           "Log in",
                           style: TextStyle(
                             color: Color(0xffFFCD30),
-                            fontSize: 28,
+                            fontSize: 24,
                             fontWeight: .w600,
                           ),
                         ),

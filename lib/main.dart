@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Cine Stream',
         theme: ThemeData(fontFamily: 'IBMPlexSansArabic'),
         home: SplashScreen(),
       ),
