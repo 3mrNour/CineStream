@@ -14,7 +14,7 @@
 
 ## Screenshots / Demo
 
-![App Overview](assets/assets/App_Overview.gif)
+![App Overview](assets/App_Overview.gif)
 
 ---
 
