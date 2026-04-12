@@ -1,6 +1,9 @@
 import 'package:cinestream/data/models/genere_model.dart';
+import 'package:cinestream/providers/navBar_provider.dart';
+import 'package:cinestream/providers/search_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AllGenresList extends StatelessWidget {
   const AllGenresList({super.key});
@@ -45,7 +48,15 @@ class AllGenresList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     splashColor: Color(0xff413066),
                     onTap: () {
-                      print("Filtering by ID: ${genre.id}");
+                      Provider.of<SearchProvider>(
+                        context,
+                        listen: false,
+                      ).searchByGenre(genre.id, genre.name);
+
+                      Provider.of<NavProvider>(
+                        context,
+                        listen: false,
+                      ).changeIndex(1);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

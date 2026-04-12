@@ -44,6 +44,8 @@ dependencies:
   cached_network_image: ^3.4.1
   motion_tab_bar_v2: ^0.4.0
   crystal_navigation_bar: ^1.1.0
+  fluttertoast: ^9.0.0
+  delightful_toast: ^1.1.0
 
 dev_dependencies:
   flutter_test:

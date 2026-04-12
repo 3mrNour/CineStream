@@ -1,20 +1,17 @@
+import 'package:cinestream/providers/user_provider.dart';
 import 'package:cinestream/screens/MainScreen.dart';
 import 'package:cinestream/screens/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormBuilderState>();
-  @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: Container(
         width: .infinity,
@@ -51,31 +48,47 @@ class _LoginScreenState extends State<LoginScreen> {
                       image: AssetImage('assets/images/CineStream.png'),
                       width: 150,
                     ),
-                    Text(
-                      "Log in",
-                      style: TextStyle(
-                        color: Color(0xffFFCD30),
-                        fontSize: 32,
-                        fontWeight: .w600,
-                      ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: .center,
+                      children: [
+                        Text(
+                          "Welcome Back! ",
+                          style: TextStyle(
+                            color: Color(0xffffffff),
+                            fontSize: 28,
+                            fontWeight: .w600,
+                          ),
+                        ),
+                        Text(
+                          "Log in",
+                          style: TextStyle(
+                            color: Color(0xffFFCD30),
+                            fontSize: 28,
+                            fontWeight: .w600,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 50),
                     SizedBox(
                       width: 320,
-                      child: FormBuilder(
-                        key: _formKey,
+                      child: Form(
+                        key: userProvider.formKey,
                         child: Column(
                           children: [
-                            FormBuilderTextField(
-                              name: 'email',
+                            TextFormField(
+                              controller: userProvider.usernmaeController,
+
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
-                                labelText: "Email",
+                                labelText: "User Name",
                                 labelStyle: TextStyle(
                                   color: Color.fromARGB(68, 255, 255, 255),
                                 ),
+                                floatingLabelBehavior: .never,
                                 prefixIcon: const Icon(
-                                  Icons.email,
+                                  Icons.person,
                                   color: Color(0xffFFCD30),
                                 ),
                                 filled: true,
@@ -111,16 +124,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
-                                FormBuilderValidators.email(),
                               ]),
                             ),
                             const SizedBox(height: 30),
-                            FormBuilderTextField(
-                              name: 'password',
+                            TextFormField(
+                              controller: userProvider.passwordController,
                               obscureText: true,
+
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: "Password",
+                                floatingLabelBehavior: .never,
                                 labelStyle: TextStyle(
                                   color: Color.fromARGB(68, 255, 255, 255),
                                 ),
@@ -172,25 +186,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               minWidth: .maxFinite,
                               height: 55,
                               onPressed: () {
-                                // Validate and save the form values
-                                _formKey.currentState?.saveAndValidate();
-                                debugPrint(
-                                  _formKey.currentState?.value.toString(),
-                                );
-
-                                // On another side, can access all field values without saving form with instantValues
-                                _formKey.currentState?.validate();
-                                debugPrint(
-                                  _formKey.currentState?.instantValue
-                                      .toString(),
-                                );
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => MainScreen(),
-                                  ),
-                                );
+                                userProvider.login(context);
                               },
-                              child: const Text('Login'),
+                              child: userProvider.isLoading
+                                  ? CircularProgressIndicator()
+                                  : Text('Login'),
                             ),
                             SizedBox(height: 30),
                             Row(

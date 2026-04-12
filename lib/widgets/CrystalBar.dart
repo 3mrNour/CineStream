@@ -3,7 +3,6 @@ import 'package:cinestream/providers/navBar_provider.dart';
 import 'package:cinestream/screens/LoginScreen.dart';
 import 'package:cinestream/screens/MainScreen.dart';
 import 'package:cinestream/screens/MovieScreen.dart';
-import 'package:cinestream/screens/TestScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';

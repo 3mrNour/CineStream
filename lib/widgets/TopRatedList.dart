@@ -29,7 +29,6 @@ class TopRatedListBuilder extends StatelessWidget {
           return Container(
             width: 100,
             height: 200,
-            // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),

@@ -1,6 +1,8 @@
 import 'package:cinestream/providers/navBar_provider.dart';
+import 'package:cinestream/screens/FavouriteScreen.dart';
 import 'package:cinestream/screens/LoginScreen.dart';
 import 'package:cinestream/screens/MainScreen.dart';
+import 'package:cinestream/screens/ProfileScreen.dart';
 import 'package:cinestream/screens/RegisterScreen.dart';
 import 'package:cinestream/screens/SearchScreen.dart';
 import 'package:cinestream/widgets/CrystalBar.dart';
@@ -19,13 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _appScreens = [
     const MainScreen(),
     const SearchScreen(),
-    const RegisterScreen(),
+    const FavouriteScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final navProvider = Provider.of<NavProvider>(context);
-    
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,

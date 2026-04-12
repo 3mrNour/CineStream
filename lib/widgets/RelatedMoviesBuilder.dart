@@ -76,7 +76,7 @@ class RelatedMoviesBuilder extends StatelessWidget {
                                     bottom: 0,
                                     left: 0,
                                     right: 0,
-                                    height: 50,
+                                    height: 90,
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         gradient: LinearGradient(
@@ -93,22 +93,40 @@ class RelatedMoviesBuilder extends StatelessWidget {
                                   Positioned(
                                     bottom: 8,
                                     left: 8,
-                                    child: Row(
+                                    child: Column(
+                                      mainAxisAlignment: .start,
+                                      crossAxisAlignment: .start,
                                       children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 14,
-                                        ),
-                                        const SizedBox(width: 3),
-                                        Text(
-                                          relatedMovie.voteAverage
-                                              .toStringAsFixed(1),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
+                                        Container(
+                                          width: 80,
+                                          child: Text(
+                                            relatedMovie.title,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: .w600,
+                                              fontSize: 12,
+                                            ),
+                                            maxLines: 2,
                                           ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                              size: 14,
+                                            ),
+                                            const SizedBox(width: 3),
+                                            Text(
+                                              relatedMovie.voteAverage
+                                                  .toStringAsFixed(1),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

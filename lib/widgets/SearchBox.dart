@@ -16,7 +16,6 @@ class _SearchBoxState extends State<SearchBox> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -24,6 +23,9 @@ class _SearchBoxState extends State<SearchBox> {
   Widget build(BuildContext context) {
     final searchProvider = Provider.of<SearchProvider>(context);
     final navProvider = Provider.of<NavProvider>(context);
+    if (!searchProvider.isSearchMode) {
+      _searchController.clear();
+    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
@@ -52,7 +54,6 @@ class _SearchBoxState extends State<SearchBox> {
                 fontSize: 14,
               ),
               prefixIcon: const Icon(Icons.search, color: Color(0xffFFCD30)),
-
               filled: true,
               fillColor: Color.fromARGB(75, 124, 92, 192),
               enabledBorder: OutlineInputBorder(

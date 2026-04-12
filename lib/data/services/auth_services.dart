@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:cinestream/data/api/api_client.dart';
+import 'package:cinestream/data/api/auth_client.dart';
 import 'package:cinestream/data/models/user_model.dart';
+import 'package:cinestream/screens/HomeScreen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServises {
-  final ApiClient _apiClient = ApiClient();
+  final AuthClient _authClient = AuthClient();
 
   Future<UserModel?> login(
     String username,
@@ -17,7 +19,7 @@ class AuthServises {
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      dio.Response loginresponse = await _apiClient.postData(
+      dio.Response loginresponse = await _authClient.postData(
         '/auth/login',
         body: {"username": username, "password": Password},
       );
@@ -26,7 +28,10 @@ class AuthServises {
         UserModel userdata = UserModel.fromJson(loginresponse.data);
         prefs.setBool("isLogin", true);
         prefs.setString("userData", jsonEncode(userdata.toJson()));
-        Navigator.pushReplacementNamed(context, '/products');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
 
         return userdata;
       }

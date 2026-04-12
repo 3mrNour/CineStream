@@ -101,10 +101,6 @@ class UpComingMoviesCarousel extends StatelessWidget {
                             ),
                           ),
                         );
-                        // Provider.of<NavProvider>(
-                        //   context,
-                        //   listen: false,
-                        // ).changeIndex(1);
                       },
                     ),
                   ),

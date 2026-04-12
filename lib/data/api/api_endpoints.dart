@@ -12,5 +12,9 @@ class ApiEndpoints {
     return 'https://api.themoviedb.org/3/movie/${movie_id}/recommendations';
   }
 
+  String getByGenre(genre_id) {
+    return 'https://api.themoviedb.org/3/discover/movie?with_genres=${genre_id}';
+  }
+
   final ImageBaseUrl = 'https://image.tmdb.org/t/p/original/';
 }

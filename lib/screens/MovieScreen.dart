@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:cinestream/data/api/api_client.dart';
 import 'package:cinestream/data/api/api_endpoints.dart';
-// import 'package:cinestream/data/models/genere_model.dart';
 import 'package:cinestream/data/models/movie_model.dart';
-// import 'package:cinestream/providers/navBar_provider.dart';
+import 'package:cinestream/providers/favourite_provider.dart';
+import 'package:cinestream/providers/navBar_provider.dart';
 import 'package:cinestream/providers/selectedMovie_provider.dart';
+import 'package:cinestream/screens/FavouriteScreen.dart';
+import 'package:cinestream/widgets/DelightedToastBar.dart';
 import 'package:cinestream/widgets/RelatedMoviesBuilder.dart';
-// import 'package:cinestream/widgets/CrystalBar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 class MovieScreen extends StatelessWidget {
   final Movie movie;
   const MovieScreen({super.key, required this.movie});
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -32,12 +31,26 @@ class MovieScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite_border,
-                    color: Colors.amber,
-                    size: 28,
-                  ),
+                  onPressed: () {
+                    Provider.of<FavoriteProvider>(
+                      context,
+                      listen: false,
+                    ).toggleFavorite(movie);
+                    CustomToast.show(
+                      context,
+                      status: ToastStatus.addedToFavorite,
+                    );
+                  },
+                  icon:
+                      Provider.of<FavoriteProvider>(
+                        context,
+                      ).isFavorite(movie.id)
+                      ? Icon(Icons.favorite, color: Colors.amber, size: 28)
+                      : Icon(
+                          Icons.favorite_border,
+                          color: Colors.amber,
+                          size: 28,
+                        ),
                 ),
                 const SizedBox(width: 10),
               ],
@@ -98,18 +111,6 @@ class MovieScreen extends StatelessWidget {
                     child: ListView(
                       children: [
                         SizedBox(height: 150),
-                        // Positioned.fill(
-                        //   child: Container(
-                        //     decoration: const BoxDecoration(
-                        //       gradient: LinearGradient(
-                        //         begin: Alignment.bottomCenter,
-                        //         end: Alignment.topCenter,
-                        //         colors: [Color(0xff291E40), Colors.transparent],
-                        //         stops: [0.0, 0.6],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
@@ -121,13 +122,11 @@ class MovieScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Title
                               const SizedBox(height: 10),
                               Row(
                                 children: [
@@ -153,9 +152,7 @@ class MovieScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    movie!.releaseDate.month.toString() +
-                                        "-" +
-                                        (movie!.releaseDate.year).toString(),
+                                    (movie!.releaseDate.year).toString(),
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 14,
@@ -164,7 +161,6 @@ class MovieScreen extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 15),
-
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
@@ -195,7 +191,6 @@ class MovieScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 20),
 
-                              // Overview (Story)
                               const Text(
                                 "Storyline",
                                 style: TextStyle(
@@ -209,16 +204,14 @@ class MovieScreen extends StatelessWidget {
                                 movie.overview,
                                 style: const TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   height: 1.5,
                                 ),
                               ),
                             ],
                           ),
                         ),
-
                         const SizedBox(height: 30),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
@@ -244,7 +237,65 @@ class MovieScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         RelatedMoviesBuilder(movie: movie),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 120),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 40,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 15),
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xffFFCD30).withOpacity(0.2),
+                                blurRadius: 15,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Provider.of<NavProvider>(
+                                context,
+                                listen: false,
+                              ).changeIndex(2);
+                              Navigator.of(
+                                context,
+                              ).popUntil((route) => route.isFirst);
+                            },
+                            icon: const Icon(
+                              Icons.bookmark_added_outlined,
+                              size: 20,
+                            ),
+                            label: const Text(
+                              "Go to Favourites",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffFFCD30),
+                              foregroundColor: const Color(0xff291E40),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 0,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -114,4 +114,24 @@ class MoviesServices {
       return [];
     }
   }
+
+  Future<List<Movie>> getMoviesByGenre(int genreId) async {
+    try {
+      String url =
+          ApiEndpoints().getByGenre(genreId);
+
+      var response = await apiClient.getData(url);
+
+      if (response.statusCode == 200 && response.data != null) {
+        return MoviesResponse.fromJson(response.data).movies;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching genre movies: $e");
+      }
+      return [];
+    }
+  }
 }

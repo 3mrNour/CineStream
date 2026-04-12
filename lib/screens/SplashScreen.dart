@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cinestream/screens/HomeScreen.dart';
 import 'package:cinestream/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,8 +16,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3), () async {
+      final prefs = await SharedPreferences.getInstance();
+      final bool isLogin = prefs.getBool('isLogin') ?? false;
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(
+          builder: (context) => isLogin ? HomeScreen() : LoginScreen(),
+        ),
       );
     });
   }
@@ -39,8 +46,8 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 Center(
                   child: Image(
-                    image: AssetImage('assets/images/logo-white.png'),
-                    width: 180,
+                    image: AssetImage('assets/images/logo-white-en.png'),
+                    width: 200,
                   ),
                 ),
                 SizedBox(height: 20),
