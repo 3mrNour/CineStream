@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:cinestream/data/api/api_client.dart';
 import 'package:cinestream/data/api/auth_client.dart';
 import 'package:cinestream/data/models/user_model.dart';
 import 'package:cinestream/screens/HomeScreen.dart';

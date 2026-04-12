@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_tab_bar_v2/motion-badge.widget.dart';
 import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
-import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
-import 'package:motion_tab_bar_v2/motion-tab-item.dart';
+
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({super.key});

@@ -1,6 +1,5 @@
 import 'package:cinestream/providers/navBar_provider.dart';
 import 'package:cinestream/providers/user_provider.dart';
-import 'package:cinestream/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

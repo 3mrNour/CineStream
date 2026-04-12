@@ -4,11 +4,7 @@ import 'package:cinestream/providers/search_provider.dart';
 import 'package:cinestream/screens/MovieScreen.dart';
 import 'package:cinestream/widgets/DelightedToastBar.dart';
 import 'package:cinestream/widgets/SearchBox.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/components/toast_card.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {

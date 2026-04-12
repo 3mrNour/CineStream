@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinestream/data/api/api_endpoints.dart';
 import 'package:cinestream/providers/movies_provider.dart';
-import 'package:cinestream/providers/navBar_provider.dart';
 import 'package:cinestream/screens/MovieScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

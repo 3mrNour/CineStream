@@ -2,7 +2,6 @@ import 'package:cinestream/providers/movies_provider.dart';
 import 'package:cinestream/widgets/AllGenresList.dart';
 import 'package:cinestream/widgets/CineStreamAppBar.dart';
 import 'package:cinestream/widgets/OurChoiceMovie.dart';
-import 'package:cinestream/widgets/CrystalBar.dart';
 import 'package:cinestream/widgets/SearchBox.dart';
 import 'package:cinestream/widgets/TopRatedList.dart';
 import 'package:cinestream/widgets/UpComingMoviesCarousel.dart';

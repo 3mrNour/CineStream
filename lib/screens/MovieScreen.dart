@@ -4,10 +4,8 @@ import 'package:cinestream/data/models/movie_model.dart';
 import 'package:cinestream/providers/favourite_provider.dart';
 import 'package:cinestream/providers/navBar_provider.dart';
 import 'package:cinestream/providers/selectedMovie_provider.dart';
-import 'package:cinestream/screens/FavouriteScreen.dart';
 import 'package:cinestream/widgets/DelightedToastBar.dart';
 import 'package:cinestream/widgets/RelatedMoviesBuilder.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

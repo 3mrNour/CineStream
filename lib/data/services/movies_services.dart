@@ -1,10 +1,7 @@
 import 'package:cinestream/data/api/api_client.dart';
 import 'package:cinestream/data/api/api_endpoints.dart';
-import 'package:cinestream/data/models/genere_model.dart';
 import 'package:cinestream/data/models/movie_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 class MoviesServices {
   ApiClient apiClient = ApiClient();
 

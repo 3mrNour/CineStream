@@ -1,7 +1,3 @@
-import 'package:cinestream/data/api/constants.dart';
-import 'package:cinestream/data/models/movie_model.dart';
-import 'package:flutter/material.dart';
-
 class ApiEndpoints {
   final upComingMovies = '/movie/upcoming';
   final popularMovies = '/movie/popular';

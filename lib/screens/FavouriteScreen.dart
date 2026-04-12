@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cinestream/data/api/api_endpoints.dart';
 import 'package:cinestream/data/models/movie_model.dart';
 import 'package:cinestream/providers/favourite_provider.dart';
-import 'package:cinestream/providers/movies_provider.dart';
-import 'package:cinestream/providers/selectedMovie_provider.dart';
 import 'package:cinestream/screens/MovieScreen.dart';
 import 'package:cinestream/widgets/DelightedToastBar.dart';
 import 'package:flutter/material.dart';
